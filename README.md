@@ -1,4 +1,5 @@
-Trabajo Final - Informatorio 2023 - ReactJS
+# Trabajo Final - Informatorio 2023 - ReactJS
+## Fernando Alegre
 
 1. Configuración inicial:
 Crear un nuevo proyecto React.js utilizando Vite.
