@@ -1,9 +1,10 @@
-/* eslint-disable react/prop-types */
+import { useParams } from "react-router-dom"
 import useFetch from "../hooks/useFetch"
 import Product from "./Product"
 
-const ProductList = () => {
-    const { data: products, isLoading, error } = useFetch('https://api.escuelajs.co/api/v1/products')
+const CategoryProducts = () => {
+    const { id } = useParams()
+    const { data: products, isLoading, error } = useFetch(`https://api.escuelajs.co/api/v1/categories/${id}/products`)
     return (
         <>
 
@@ -32,4 +33,4 @@ const ProductList = () => {
     )
 }
 
-export default ProductList
+export default CategoryProducts

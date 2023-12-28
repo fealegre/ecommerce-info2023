@@ -1,14 +1,15 @@
-/* eslint-disable react/prop-types */
+import { NavLink } from "react-router-dom"
 
+/* eslint-disable react/prop-types */
 const Category = ({ category }) => {
 
     return (
-        <>
-            <div className="item">
-                <p>{category.name}</p>
-                <img src={category.image} alt={category.name} />                
-            </div >
-        </>
+        <NavLink to={`${category.id}/products`} className="list-group-item" >
+            <div className="card" style={{ width: '18rem', height: '18rem' }}>
+                <h4 className="card-title">{category.name}</h4>
+                <img src={category.image} className="card-img-bottom" alt={category.name} />
+            </div>
+        </NavLink>
     )
 }
 

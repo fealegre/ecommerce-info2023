@@ -7,6 +7,7 @@ import NoMatch from './components/NoMatch';
 import ProductList from './components/ProductList';
 import CategoriesList from './components/CategoriesList';
 import ProductDetail from './components/ProductDetail';
+import CategoryProducts from './components/CategoryProducts';
 import './App.css'
 
 
@@ -19,7 +20,10 @@ function App() {
           <Route path="home" element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="categories" element={<CategoriesList />} />
+          <Route path="categories">
+            <Route path=':id/products' element={<CategoryProducts />} />
+            <Route path='' element={<CategoriesList />} />
+          </Route>
           <Route path="products" element={<ProductList />} />
           <Route path="products/:id" element={<ProductDetail />} />
           <Route path="*" element={<NoMatch />} />
