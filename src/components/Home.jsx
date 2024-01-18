@@ -1,9 +1,17 @@
-const Home = ()=> {
-    return (
-        <div>
-            <h1>Yo soy el HOME</h1>
-        </div>
-    )
-}
+import { useAuth } from "../contexts/AuthProvider";
 
-export default Home
+const Home = () => {
+  const auth = useAuth();
+  return (
+    <div className="container">
+      <div>
+        <h1>Welcome! {auth.user?.name}</h1>
+        <button onClick={() => auth.logOut()} className="btn-submit">
+          logout
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Home;

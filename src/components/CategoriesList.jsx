@@ -3,22 +3,25 @@ import useFetch from '../hooks/useFetch'
 import Category from "./Category"
 
 const CategoriesList = () => {
-    const { data:categories, isLoading, error} = useFetch('https://api.escuelajs.co/api/v1/categories')
+    const { data: categories, isLoading, error } = useFetch('https://api.escuelajs.co/api/v1/categories')
     return (
         <div className="container">
             {error && <div>{error}</div>}
             {isLoading &&
-                <div className="d-flex align-items-center">
-                    <strong>Loading...</strong>
-                    <div className="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                <div className="text-center">
+                    <div className="spinner" role="status">
+                    </div>
                 </div>}
-            {categories && categories.map((category) => (
-                <Category
-                    key={category.id}
-                    category={category} />
-            )
-            )
-            }
+            <h1>Categorias</h1>
+            <div className="container">
+                {categories && categories.map((category) => (
+                    <Category
+                        key={category.id}
+                        category={category} />
+                )
+                )
+                }
+            </div>
         </div>
     )
 }

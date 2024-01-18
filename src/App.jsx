@@ -14,20 +14,20 @@ import './App.css'
 function App() {
   return (
     <div>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="home" element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="categories">
-            <Route path=':id/products' element={<CategoryProducts />} />
-            <Route path='' element={<CategoriesList />} />
-          </Route>
-          <Route path="products" element={<ProductList />} />
-          <Route path="products/:id" element={<ProductDetail />} />
-          <Route path="*" element={<NoMatch />} />
-        </Route>
+      <Routes>        
+          <Route element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="home" element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="categories">
+              <Route path=':id/products' element={<CategoryProducts />} />
+              <Route path='' element={<CategoriesList />} />
+            </Route>
+            <Route path="products" element={<ProductList />} />
+            <Route path="products/:id" element={<ProductDetail />} />
+            <Route path="*" element={<NoMatch />} />
+          </Route>        
       </Routes>
     </div>
   )

@@ -7,18 +7,18 @@ const CategoryProducts = () => {
     const { data: products, isLoading, error } = useFetch(`https://api.escuelajs.co/api/v1/categories/${id}/products`)
     return (
         <>
-
             {error &&
                 <div>
                     {error}
                 </div>}
             {isLoading &&
                 <div className="text-center">
-                    <div className="spinner-border" role="status">
-                        
+                    <div className="spinner" role="status">
+
                     </div>
                 </div>
             }
+            <h1></h1>
             <div className="container">
                 {products && products.map((product) => (
                     <Product
