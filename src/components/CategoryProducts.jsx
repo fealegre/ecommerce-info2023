@@ -18,7 +18,6 @@ const CategoryProducts = () => {
                     </div>
                 </div>
             }
-            <h1></h1>
             <div className="container">
                 {products && products.map((product) => (
                     <Product

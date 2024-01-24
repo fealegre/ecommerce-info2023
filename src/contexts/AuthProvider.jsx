@@ -19,7 +19,9 @@ const AuthProvider = ({ children }) => {
         )
             .then(res => {
                 if (!res.ok) {
+                    alert('No existe este usuario');
                     throw Error('No existen datos para este recurso');
+                    
                 }
                 return res.json()
             })
@@ -27,6 +29,7 @@ const AuthProvider = ({ children }) => {
                 console.log(data)
                 setToken(data.access_token);
                 localStorage.setItem("site", data.access_token);
+
                 const fetchOptions = {
                     method: 'GET',
                     headers: {
@@ -48,7 +51,7 @@ const AuthProvider = ({ children }) => {
                     .catch(err => {
                         console.error(err);
                     })
-                navigate("/home");
+                navigate("/dashboard");
             })
             .catch(err => {
                 console.error(err);
@@ -56,10 +59,6 @@ const AuthProvider = ({ children }) => {
 
 
     }
-
-
-
-
 
     const logOut = () => {
         setUser(null);

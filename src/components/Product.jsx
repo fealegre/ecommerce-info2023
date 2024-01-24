@@ -1,6 +1,11 @@
 /* eslint-disable react/prop-types */
 import { NavLink } from 'react-router-dom';
+import { useAuth } from "../contexts/AuthProvider";
+
+
 const Product = ({ product }) => {
+    const auth = useAuth();
+
     return (
         <div className="card" style={{ width: '18rem' }}>
             <img src={product.images[0]} className="card-img-top" alt={product.title} />
@@ -13,9 +18,11 @@ const Product = ({ product }) => {
                 <li className="list-group-item">Stock:</li>
                 <li className="list-group-item"><strong>${product.price}</strong></li>
             </ul>
-            <div className="card-footer d-grid gap-2 d-md-block">
-                <NavLink to={`/products/${product.id}`} className="btn btn-info btn-sm">Detalle</NavLink>
-                <NavLink to={`/products/${product.id}`} className="btn btn-secondary btn-sm">Editar</NavLink>
+            <div className="card-footer d-flex justify-content-between">
+                <NavLink to={`/products/${product.id}`} className="btn btn-info">Detalle</NavLink>
+                {(auth.user && auth.user.role=='admin') 
+                ? <NavLink to={`/products/${product.id}`} className="btn btn-secondary">Editar</NavLink>
+                :''}
             </div>
         </div>
     )

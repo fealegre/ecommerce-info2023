@@ -26,7 +26,7 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <form onSubmit={handleSubmitEvent}>
         <div className="form-control">
           <label htmlFor="user-email">Email:</label>
@@ -37,13 +37,13 @@ const Login = () => {
             placeholder="example@yahoo.com"
             aria-describedby="user-email"
             aria-invalid="false"
-            onChange={handleInput}
+            onChange={handleInput}            
           />
           <div id="user-email" className="sr-only">
             Please enter a valid username. It must contain at least 6 characters.
           </div>
         </div>
-        <div className="form-control">
+        <div className="form-control mt-2">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -54,10 +54,10 @@ const Login = () => {
             onChange={handleInput}
           />
           <div id="user-password" className="sr-only">
-            your password should be more than 6 character
+            Your password should be more than 6 character
           </div>
         </div>
-        <button type='submit' className="btn btn-primary">Submit</button>
+        <button type='submit' className="btn btn-primary mt-2">Submit</button>
       </form>
     </div>
   );
