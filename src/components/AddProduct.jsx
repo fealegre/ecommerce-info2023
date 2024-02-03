@@ -1,16 +1,29 @@
-import { useState } from "react";
+import { useState } from 'react'
 import axios from 'axios';
 
-const Register = () => {
+
+/* 
+[POST] https://api.escuelajs.co/api/v1/products/
+# Body
+{
+  "title": "New Product",
+  "price": 10,
+  "description": "A description",
+  "categoryId": 1,
+  "images": ["https://placeimg.com/640/480/any"]
+} */
+
+export default function AddProduct() {
+
     const apiUrl = "https://api.escuelajs.co/api/v1/";
-    const dataURL = `${apiUrl}users/`;
+    const dataURL = `${apiUrl}products/`;
     const imageURL = `${apiUrl}files/upload`;
 
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        avatar: null,
+        title: "",
+        price: 0.0,
+        description: "",
+        image: null,
     });
 
     const handleInputChange = (e) => {
@@ -33,11 +46,11 @@ const Register = () => {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
 
-                console.log("Avatar cargado:", response.data);
+                console.log("Imagen de producto cargada:", response.data);
                 return response.data.location;
             }
         } catch (error) {
-            console.error("Error durante la carga del avatar:", error);
+            console.error("Error durante la carga de la imagen:", error);
             throw error;
         }
     };
@@ -64,46 +77,56 @@ const Register = () => {
     };
 
     return (
-        <div className="container-fluid">
-            <form onSubmit={handleSubmit}>
+        <div className="container-fluid">            
+            <form className="collapse" id="productForm" onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="user-name">Name</label>
+                    <label htmlFor="user-name">Nombre del producto</label>
                     <input
                         className="form-control"
                         type="text"
-                        id="user-name"
-                        name="name"
-                        placeholder="John Doe"
+                        id="product-title"
+                        name="title"
+                        placeholder="Pantalon jean"
                         onChange={handleInputChange}
                     />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="user-email">Email</label>
+                    <label htmlFor="user-email">Precio</label>
                     <input
                         className="form-control"
-                        type="email"
-                        id="user-email"
-                        name="email"
-                        placeholder="email@example.com"
+                        type="number"
+                        id="product-price"
+                        name="price"
+                        placeholder="1200"
                         onChange={handleInputChange}
                     />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password">Descripción</label>
                     <input
                         className="form-control"
-                        type="password"
-                        id="password"
-                        name="password"
+                        type="text"
+                        id="product-desc"
+                        name="description"
                         onChange={handleInputChange}
                     />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="user-avatar">Avatar</label>
+                    <label htmlFor="password">Categoría</label>
+                    <input
+                        className="form-control"
+                        type="text"
+                        id="product-cat"
+                        name="categorie"
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="user-avatar">Imagen del producto</label>
                     <input
                         className="form-control"
                         type="file"
-                        id="user-avatar"
+                        id="product-img"
                         name="avatar"
                         onChange={handleInputChange}
                     />
@@ -111,7 +134,5 @@ const Register = () => {
                 <button type='submit' className="btn btn-primary mt-2">Submit</button>
             </form>
         </div>
-    );
-};
-
-export default Register;
+    )
+}

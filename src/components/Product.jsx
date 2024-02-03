@@ -2,9 +2,9 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from "../contexts/AuthProvider";
 
-
 const Product = ({ product }) => {
     const auth = useAuth();
+    const adminUser = (auth.user && auth.user.role) == 'admin'
 
     return (
         <div className="card" style={{ width: '18rem' }}>
@@ -19,10 +19,26 @@ const Product = ({ product }) => {
                 <li className="list-group-item"><strong>${product.price}</strong></li>
             </ul>
             <div className="card-footer d-flex justify-content-between">
-                <NavLink to={`/products/${product.id}`} className="btn btn-info">Detalle</NavLink>
-                {(auth.user && auth.user.role=='admin') 
-                ? <NavLink to={`/products/${product.id}`} className="btn btn-secondary">Editar</NavLink>
-                :''}
+                <NavLink to={`/products/${product.id}`} className="btn btn-info">
+                    <li className="material-symbols-outlined">feed</li>
+                    <li>Detalles</li>
+                </NavLink>
+                {adminUser &&
+                    <NavLink to={`/products/${product.id}`} className="btn btn-secondary">
+                        <li className="material-symbols-outlined">edit</li>
+                        <li>Editar</li>
+                    </NavLink>
+                }
+                {adminUser ?
+                    <NavLink to={`/products/${product.id}`} className="btn btn-info">
+                        <li className="material-symbols-outlined">delete</li>
+                        <li>Eliminar</li>
+                    </NavLink>
+                    :
+                    <NavLink to={`/products/${product.id}`} className="btn btn-info">
+                        <li className="material-symbols-outlined">add_shopping_cart</li>
+                        <li>Carrito</li>
+                    </NavLink>}                
             </div>
         </div>
     )
