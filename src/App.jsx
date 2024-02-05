@@ -11,6 +11,7 @@ import CategoryProducts from './components/CategoryProducts';
 import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './components/Dashboard';
 import './App.css'
+import DeleteProduct from './components/DeleteProduct';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/products/:id" element={<DeleteProduct />} />
           </Route>
           <Route path="register" element={<Register />} />
           <Route path="categories">
@@ -30,7 +32,7 @@ function App() {
             <Route path='' element={<CategoriesList />} />
           </Route>
           <Route path="products" element={<ProductList />} />
-          <Route path="products/:id" element={<ProductDetail />} />
+          <Route path="products/:id" element={<ProductDetail />} />          
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>

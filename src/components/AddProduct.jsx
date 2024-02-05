@@ -1,138 +1,119 @@
-import { useState } from 'react'
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
 
-
-/* 
-[POST] https://api.escuelajs.co/api/v1/products/
-# Body
-{
-  "title": "New Product",
-  "price": 10,
-  "description": "A description",
-  "categoryId": 1,
-  "images": ["https://placeimg.com/640/480/any"]
-} */
-
-export default function AddProduct() {
-
+const AddProduct = () => {
     const apiUrl = "https://api.escuelajs.co/api/v1/";
     const dataURL = `${apiUrl}products/`;
     const imageURL = `${apiUrl}files/upload`;
+    const [title, setTitle] = useState("");
+    const [price, setPrice] = useState(0);
+    const [description, setDescription] = useState("");
+    const [categoryId, setCategoryId] = useState(0);
+    const [images, setImages] = useState([]);
 
-    const [formData, setFormData] = useState({
-        title: "",
-        price: 0.0,
-        description: "",
-        image: null,
-    });
+    
+    const handleInputImagesChange = (e) => {
+        const { files } = e.target;
 
-    const handleInputChange = (e) => {
-        const { name, value, type } = e.target;
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: type === 'file' ? e.target.files[0] : value,
-        }));
+        setImages([...images,...files]);
     };
-
-    const handleFileUpload = async () => {
-        try {
-            if (formData.avatar) {
-                const formDataFile = new FormData();
-                formDataFile.append('file', formData.avatar);
-                formDataFile.append('fileName', formData.avatar.name);
-
-                const response = await axios.post(imageURL, formDataFile, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                });
-
-                console.log("Imagen de producto cargada:", response.data);
-                return response.data.location;
-            }
-        } catch (error) {
-            console.error("Error durante la carga de la imagen:", error);
-            throw error;
-        }
-    };
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            // Cargar el archivo y obtener la URL del avatar
-            const avatarUrl = await handleFileUpload();
+        // Convertir las imágenes a FormData
+        const formData = new FormData();
+        Array.from(images).forEach((image) => {
+            formData.append("file", image);
+        });
+        console.log(formData);
 
-            // Realizar el registro del usuario con la URL del avatar
-            const userData = await axios.post(dataURL, {
-                ...formData,
-                avatar: avatarUrl,
-            }, {
-                headers: { "Content-Type": "application/json" },
+        // Subir las imágenes al endpoint de archivos
+        const imageUploadPromises = Array.from(images).map(() => {
+            return axios.post(imageURL, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             });
+        });
 
-            console.log("Usuario registrado:", userData.data);
-        } catch (error) {
-            console.error("Error durante el registro:", error);
-        }
+        const imageResponses = await Promise.all(imageUploadPromises);
+
+        // Obtener las URLs de las imágenes
+        const urls = imageResponses.map((response) => response.data.location);
+
+        // Agregar las URLs al objeto del producto
+        const product = {
+            title,
+            price,
+            description,
+            categoryId,
+            images: urls,
+        };
+
+        // Enviar el producto al endpoint
+        const response = await axios.post(dataURL, product);
+        console.log('Product added successfully:', response.data);
+
+        // Redirigir a la página de productos
+        // window.location.href = "/products";
     };
 
     return (
-        <div className="container-fluid">            
-            <form className="collapse" id="productForm" onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="user-name">Nombre del producto</label>
-                    <input
-                        className="form-control"
-                        type="text"
-                        id="product-title"
-                        name="title"
-                        placeholder="Pantalon jean"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="user-email">Precio</label>
-                    <input
-                        className="form-control"
-                        type="number"
-                        id="product-price"
-                        name="price"
-                        placeholder="1200"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="password">Descripción</label>
-                    <input
-                        className="form-control"
-                        type="text"
-                        id="product-desc"
-                        name="description"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="password">Categoría</label>
-                    <input
-                        className="form-control"
-                        type="text"
-                        id="product-cat"
-                        name="categorie"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="user-avatar">Imagen del producto</label>
-                    <input
-                        className="form-control"
-                        type="file"
-                        id="product-img"
-                        name="avatar"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <button type='submit' className="btn btn-primary mt-2">Submit</button>
+        <div>
+            <h1>Agregar Producto</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="title">Título:</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+
+                <label htmlFor="price">Precio:</label>
+                <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                />
+
+                <label htmlFor="description">Descripción:</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+
+                <label htmlFor="category">Categoría:</label>
+                <select
+                    id="category"
+                    name="category"
+                    value={categoryId}
+                    onChange={(e) => setCategoryId(e.target.value)}
+                >
+                    <option value="">Seleccione una categoría</option>
+                    <option value="1">Categoría 1</option>
+                    <option value="2">Categoría 2</option>
+                </select>
+
+                <label htmlFor="images">Imágenes:</label>
+                <input
+                    type="file"
+                    id="images"
+                    name="images"
+                    multiple
+                    onChange={handleInputImagesChange}
+                />
+
+                <button type="submit">Agregar Producto</button>
             </form>
         </div>
-    )
-}
+    );
+};
+
+export default AddProduct;
